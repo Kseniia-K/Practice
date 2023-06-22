@@ -47,19 +47,35 @@
             </tr>
         </table>
     </form>
-    <script>
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', '/', false);
-        try {
-        xhr.send();
-        if (xhr.status != 200) {
-            console.log(`Ошибка ${xhr.status}: ${xhr.statusText}`);
-        } else {
-            console.log(xhr.response);
-        }
-        } catch(err) { // для отлова ошибок используем конструкцию try...catch вместо onerror
-            console.log("Запрос не удался");
-        }
+    <script type="module" src="script.js">
+
+        // const serverURL = 'http://localhost:3000/';
+        // const btn = document.querySelector('button');
+        // const txt = document.querySelector('input');
+        // btn.addEventListener('click', getLinks);
+        // function getLinks(){
+        //     let word = txt.value;
+        //     let fullUrl = serverURL + '?word='+word;
+        //     fetch(fullUrl)
+        //     .then((response) => {
+        //         console.log(response);
+        //     })
+        // }
+
+        // -----------------------------------
+        // let xhr = new XMLHttpRequest();
+        // xhr.open('GET', '/', false);
+        // try {
+        // xhr.send();
+        // if (xhr.status != 200) {
+        //     console.log(`Ошибка ${xhr.status}: ${xhr.statusText}`);
+        // } else {
+        //     console.log(xhr.response);
+        // }
+        // } catch(err) { // для отлова ошибок используем конструкцию try...catch вместо onerror
+        //     console.log("Запрос не удался");
+        // }
+        // -----------------------------------
 
         // document.getElementById("submit").addEventListener("click", function (e) {
         //     e.preventDefault();

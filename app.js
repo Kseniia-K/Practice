@@ -1,51 +1,53 @@
-const express = require("express");
-const app = express();
-const axios = require("axios");
+const http = require("http");
+const fs = require("fs");
+// const fullUrl = require("./script");
 
-// создаём парсер для данных в формате json
-const jsonParser = express.json();
+const kws = { 
+    clownfish : ["https://ru.wikipedia.org/wiki/Рыбы-клоуны", "https://akvarium-moskva.ru/akvariumnye_obitateli/ryba-kloun.html"], 
+    dolphins : ["https://ru.wikipedia.org/wiki/Дельфины","https://www.vokrugsveta.ru/articles/vtorye-posle-cheloveka-6-faktov-o-delfinakh-id665466/"], 
+    wales : ["https://ru.wikipedia.org/wiki/Киты", "https://www.vokrugsveta.ru/vs/article/6655/"] 
+  }
+    
+http.createServer(function(request, response){
+    if(request.url == "/?keyword=wales"){
+        response.end(`${kws.wales}`);
+    }
+    // if(request.url == fullUrl){
+    //     response.end(`${kws.wales}`);
+    // }
+    else{
+        fs.readFile("index.html", (error, data) => response.end(data));
+    }
+}).listen(3000, () => console.log("Сервер запущен по адресу http://localhost:3000"));
 
+
+// -----------------------------------
+
+// const express = require("express");
+// const app = express();
+// const axios = require("axios");
+
+// // создаём парсер для данных в формате json
+// const jsonParser = express.json();
+
+
+// // app.get("/", function(request, response){
+// //     response.sendFile(__dirname + "/index.html");
+// // })
+
+// let k = module.exports = require("./keywords.js");
+
+// app.post("/", jsonParser, function (request, response){
+//     console.log(request.body);
+//     response.json(request.body); // отправляем  пришедший ответ обратно
+// });
 
 // app.get("/", function(request, response){
 //     response.sendFile(__dirname + "/index.html");
-// })
+// });
 
-let k = module.exports = require("./keywords.js");
-
-app.post("/", jsonParser, function (request, response){
-    console.log(request.body);
-    response.json(request.body); // отправляем  пришедший ответ обратно
-});
-
-app.get("/", function(request, response){
-    response.sendFile(__dirname + "/index.html");
-});
-
-axios.post('/kw', {
-    k
-})
-.then(function (response) {
-    console.log(response);
-})
-.catch(function (error) {
-    console.log(error);
-});
-
-axios.get('/kw')
-.then(function (response) {
-// handle success
-console.log(k);
-})
-.catch(function (error) {
-// handle error
-console.log(error);
-})
-.finally(function () {
-// always executed
-});
-
-// axios.post('/', {
-//     k: express.response
+// axios.post('/kw', {
+//     k
 // })
 // .then(function (response) {
 //     console.log(response);
@@ -54,14 +56,37 @@ console.log(error);
 //     console.log(error);
 // });
 
-// app.use("/keywords", function(request, response){
-//     response.send("<h1>Hello</h1>");
+// axios.get('/kw')
+// .then(function (response) {
+// // handle success
+// console.log(k);
+// })
+// .catch(function (error) {
+// // handle error
+// console.log(error);
+// })
+// .finally(function () {
+// // always executed
 // });
 
+// // axios.post('/', {
+// //     k: express.response
+// // })
+// // .then(function (response) {
+// //     console.log(response);
+// // })
+// // .catch(function (error) {
+// //     console.log(error);
+// // });
+
+// // app.use("/keywords", function(request, response){
+// //     response.send("<h1>Hello</h1>");
+// // });
 
 
-app.listen(3000, () => console.log("Server has been started!"));
+// app.listen(3000, () => console.log("Server has been started!"));
 
+// -----------------------------------
 
 // const axios = require("axios");
 
