@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(168, 222, 254);
+}
+h1 {
+    margin-top: 100px;
+}
+form {
+    background-color: white;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 20px;
+}
+input {
+    width: 180px;
+}
+button {
+    margin-top: 25px;
+}
+

@@ -1,70 +1,153 @@
 const express = require("express");
 const app = express();
+const axios = require("axios");
 
-const urlencodedParser = express.urlencoded({extended: false});
+// создаём парсер для данных в формате json
+const jsonParser = express.json();
+
+
+// app.get("/", function(request, response){
+//     response.sendFile(__dirname + "/index.html");
+// })
+
+let k = module.exports = require("./keywords.js");
+
+app.post("/", jsonParser, function (request, response){
+    console.log(request.body);
+    response.json(request.body); // отправляем  пришедший ответ обратно
+});
 
 app.get("/", function(request, response){
     response.sendFile(__dirname + "/index.html");
 });
 
-app.post("/", urlencodedParser, function(request, response){
-    let kanswer = request.body.keyword;
-    let k = module.exports = require("./keywords.js");
-
-    if (kanswer in k){
-        let urlAnsw = JSON.stringify(k[kanswer]);
-        let clearUrl = urlAnsw.replaceAll(/[\[\]\"]/g, "");
-        
-        let urlsArray = [];
-        urlsArray = clearUrl.split(",");
-
-        function addUrlToList(){
-            let content = "";
-            for (let i = 0; i < urlsArray.length; i++){
-                content += 
-                `<input type="radio" id="url${i}" name="chooseUrl"/>
-                <label for="url${i}"><a href="${urlsArray[i]}">${urlsArray[i]}</a></label><br><br>`;
-            }
-            return content;
-        }
-
-        response.send(` <!DOCTYPE html>
-                        <html lang="en">
-                            <head>
-                                <meta charset="UTF-8">
-                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                <title>Ссылки</title>
-                            </head>
-                            <body>
-                                <h1>Список ссылок:</h1>
-                                <form method="get">
-                                    <label>Выберите ссылку ниже:</label><br><br>
-                                        ${addUrlToList()}
-                                    <button type="button" onclick="getPage()">Получить страницу</button>
-                                </form>
-                            <script>
-                                function getPage(){
-                                //    let myStorage = window.localStorage;
-                                //    console.log(myStorage.setItem('a', 'https://ru.wikipedia.org/wiki/Киты'));
-                                    fetch('https://ru.wikipedia.org/wiki/Киты', {
-                                        mode: "no-cors",
-                                        host: "http://localhost:3000/"
-                                    })
-                                    .then((response) => {
-                                        return response;
-                                    })
-                                    .then((data) => {
-                                        console.log(localStorage.setItem("1", data));
-                                    });
-                                }
-                            </script>
-                            </body>
-                        </html>
-        `);
-    }
+axios.post('/kw', {
+    k
+})
+.then(function (response) {
+    console.log(response);
+})
+.catch(function (error) {
+    console.log(error);
 });
 
+axios.get('/kw')
+.then(function (response) {
+// handle success
+console.log(k);
+})
+.catch(function (error) {
+// handle error
+console.log(error);
+})
+.finally(function () {
+// always executed
+});
+
+// axios.post('/', {
+//     k: express.response
+// })
+// .then(function (response) {
+//     console.log(response);
+// })
+// .catch(function (error) {
+//     console.log(error);
+// });
+
+// app.use("/keywords", function(request, response){
+//     response.send("<h1>Hello</h1>");
+// });
+
+
+
 app.listen(3000, () => console.log("Server has been started!"));
+
+
+// const axios = require("axios");
+
+// const urlencodedParser = express.urlencoded({extended: false});
+
+// app.get("/", function(request, response){
+//     response.sendFile(__dirname + "/index.html");
+// });
+
+// axios.get('/keywords')
+// .then(function (response) {
+// // handle success
+// console.log(response);
+// })
+// .catch(function (error) {
+// // handle error
+// console.log(error);
+// })
+// .finally(function () {
+// // always executed
+// });
+
+// app.listen(3000, () => console.log("Server has been started!"));
+
+
+
+
+
+// app.post("/", urlencodedParser, function(request, response){
+//     let kanswer = request.body.keyword;
+//     let k = module.exports = require("./keywords.js");
+
+//     if (kanswer in k){
+//         let urlAnsw = JSON.stringify(k[kanswer]);
+//         let clearUrl = urlAnsw.replaceAll(/[\[\]\"]/g, "");
+        
+//         let urlsArray = [];
+//         urlsArray = clearUrl.split(",");
+
+//         function addUrlToList(){
+//             let content = "";
+//             for (let i = 0; i < urlsArray.length; i++){
+//                 content += 
+//                 `<input type="radio" id="url${i}" name="chooseUrl"/>
+//                 <label for="url${i}"><a href="${urlsArray[i]}">${urlsArray[i]}</a></label><br><br>`;
+//             }
+//             return content;
+//         }
+
+//         response.send(` <!DOCTYPE html>
+//                         <html lang="en">
+//                             <head>
+//                                 <meta charset="UTF-8">
+//                                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//                                 <title>Ссылки</title>
+//                             </head>
+//                             <body>
+//                                 <h1>Список ссылок:</h1>
+//                                 <form method="get">
+//                                     <label>Выберите ссылку ниже:</label><br><br>
+//                                         ${addUrlToList()}
+//                                     <button type="button" onclick="getPage()">Получить страницу</button>
+//                                 </form>
+//                             <script>
+//                                 function getPage(){
+//                                 //    let myStorage = window.localStorage;
+//                                 //    console.log(myStorage.setItem('a', 'https://ru.wikipedia.org/wiki/Киты'));
+//                                     fetch('https://ru.wikipedia.org/wiki/Киты', {
+//                                         mode: "no-cors",
+//                                         host: "http://localhost:3000/"
+//                                     })
+//                                     .then((response) => {
+//                                         return response;
+//                                     })
+//                                     .then((data) => {
+//                                         console.log(localStorage.setItem("1", data));
+//                                     });
+//                                 }
+//                             </script>
+//                             </body>
+//                         </html>
+//         `);
+//     }
+// });
+
+// app.listen(3000, () => console.log("Server has been started!"));
 
 
 
