@@ -23,17 +23,43 @@ app.post("/", urlencodedParser, function(request, response){
             for (let i = 0; i < urlsArray.length; i++){
                 content += 
                 `<input type="radio" id="url${i}" name="chooseUrl"/>
-                <label for="url${i}">${urlsArray[i]}</label><br><br>`;
+                <label for="url${i}"><a href="${urlsArray[i]}">${urlsArray[i]}</a></label><br><br>`;
             }
             return content;
         }
 
-        response.send(` <h1>Список ссылок:</h1>
-                            <form method="get">
-                                <label>Выберите ссылку ниже:</label><br>
-                                    ${addUrlToList()}
-                                <button type="submit" id="submit">Отправить</button>
-                            </form>
+        response.send(` <!DOCTYPE html>
+                        <html lang="en">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <title>Ссылки</title>
+                            </head>
+                            <body>
+                                <h1>Список ссылок:</h1>
+                                <form method="get">
+                                    <label>Выберите ссылку ниже:</label><br><br>
+                                        ${addUrlToList()}
+                                    <button type="button" onclick="getPage()">Получить страницу</button>
+                                </form>
+                            <script>
+                                function getPage(){
+                                //    let myStorage = window.localStorage;
+                                //    console.log(myStorage.setItem('a', 'https://ru.wikipedia.org/wiki/Киты'));
+                                    fetch('https://ru.wikipedia.org/wiki/Киты', {
+                                        mode: "no-cors",
+                                        host: "http://localhost:3000/"
+                                    })
+                                    .then((response) => {
+                                        return response;
+                                    })
+                                    .then((data) => {
+                                        console.log(localStorage.setItem("1", data));
+                                    });
+                                }
+                            </script>
+                            </body>
+                        </html>
         `);
     }
 });
@@ -42,6 +68,19 @@ app.listen(3000, () => console.log("Server has been started!"));
 
 
 
+
+
+// fetch('https://ru.wikipedia.org/wiki/Киты', {
+//     mode: "no-cors",
+//     host: "http://localhost:3000/",
+//     referer: "https://ru.wikipedia.org/wiki/Киты"
+// })
+// .then((response) => {
+//     return response;
+// })
+// .then((data) => {
+//     console.log(data);
+// });
 
 
 
