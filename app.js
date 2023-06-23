@@ -1,45 +1,76 @@
 const http = require("http");
 const fs = require("fs");
-// const fullUrl = require("./script");
 
-const kws = { 
-    clownfish : ["https://ru.wikipedia.org/wiki/Рыбы-клоуны", "https://akvarium-moskva.ru/akvariumnye_obitateli/ryba-kloun.html"], 
-    dolphins : ["https://ru.wikipedia.org/wiki/Дельфины","https://www.vokrugsveta.ru/articles/vtorye-posle-cheloveka-6-faktov-o-delfinakh-id665466/"], 
-    wales : ["https://ru.wikipedia.org/wiki/Киты", "https://www.vokrugsveta.ru/vs/article/6655/"] 
-  }
+const kws = module.exports = require("./keywords.js");
     
 http.createServer(function(request, response){
     let url = new URL(`https://${request.headers.host+request.url}`);
     let searchParams = new URLSearchParams(url.search);
     let searchEnd = searchParams.get("keyword");
-    // console.log(searchEnd);  // output wales
 
-    if (searchEnd in kws){
-        response.end(`${kws[searchEnd]}`);
+    if (searchEnd in kws) {
+        fs.readFile("urlslist.html", "utf8", function(error, data){
+            let content = "";
+            for (let i = 0; i < kws[searchEnd].length; i++){
+                content +=
+                `<tr class="trUrls">
+                    <td>
+                        <input type="radio" id="url${i}" name="chooseUrl"/>
+                        <label for="url${i}">${kws[searchEnd][i]}</label>
+                    </td>
+                </tr>`
+            }
+            data = data.replace("{content}", content);
+            response.end(data);
+        });
     }
-    // if(request.url == "/?keyword=wales"){
-    //     response.end(`${kws[searchEnd]}`);
-    // }
-    // if(request.url == "/?keyword=wales"){
-    //     response.end(`https://${request.headers.host+request.url}`);
-    // }
-    // if(request.url == "/?keyword=wales"){
-    //     response.end(`${kws.wales}`);
-    // }
-    // if(request.url == "/?keyword=dolphins"){
-    //     response.end(`${kws.dolphins}`);
-    // }
-    // if(request.url == "/?keyword=clownfish"){
-    //     response.end(`${kws.clownfish}`);
-    // }
-    // if(request.url == fullUrl){
-    //     response.end(`${kws.wales}`);
-    // }
-    else{
+    else {
         fs.readFile("index.html", (error, data) => response.end(data));
     }
 }).listen(3000, () => console.log("Сервер запущен по адресу http://localhost:3000"));
 
+
+// -----------------------------------
+
+// const http = require("http");
+// const fs = require("fs");
+
+// // const kws = { 
+// //     clownfish : ["https://ru.wikipedia.org/wiki/Рыбы-клоуны", "https://akvarium-moskva.ru/akvariumnye_obitateli/ryba-kloun.html"], 
+// //     dolphins : ["https://ru.wikipedia.org/wiki/Дельфины","https://www.vokrugsveta.ru/articles/vtorye-posle-cheloveka-6-faktov-o-delfinakh-id665466/"], 
+// //     wales : ["https://ru.wikipedia.org/wiki/Киты", "https://www.vokrugsveta.ru/vs/article/6655/"] 
+// // }
+
+// const kws = module.exports = require("./keywords.js");
+    
+// http.createServer(function(request, response){
+//     let url = new URL(`https://${request.headers.host+request.url}`);
+//     let searchParams = new URLSearchParams(url.search);
+//     let searchEnd = searchParams.get("keyword");
+//     // console.log(searchEnd);  // output wales
+
+//     if (searchEnd in kws){
+//         response.end(`${kws[searchEnd]}`);
+//     }
+//     // if(request.url == "/?keyword=wales"){
+//     //     response.end(`${kws[searchEnd]}`);
+//     // }
+//     // if(request.url == "/?keyword=wales"){
+//     //     response.end(`https://${request.headers.host+request.url}`);
+//     // }
+//     // if(request.url == "/?keyword=wales"){
+//     //     response.end(`${kws.wales}`);
+//     // }
+//     // if(request.url == "/?keyword=dolphins"){
+//     //     response.end(`${kws.dolphins}`);
+//     // }
+//     // if(request.url == "/?keyword=clownfish"){
+//     //     response.end(`${kws.clownfish}`);
+//     // }
+//     else {
+//         fs.readFile("index.html", (error, data) => response.end(data));
+//     }
+// }).listen(3000, () => console.log("Сервер запущен по адресу http://localhost:3000"));
 
 // -----------------------------------
 
