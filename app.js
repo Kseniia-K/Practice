@@ -9,9 +9,29 @@ const kws = {
   }
     
 http.createServer(function(request, response){
-    if(request.url == "/?keyword=wales"){
-        response.end(`${kws.wales}`);
+    let url = new URL(`https://${request.headers.host+request.url}`);
+    let searchParams = new URLSearchParams(url.search);
+    let searchEnd = searchParams.get("keyword");
+    // console.log(searchEnd);  // output wales
+
+    if (searchEnd in kws){
+        response.end(`${kws[searchEnd]}`);
     }
+    // if(request.url == "/?keyword=wales"){
+    //     response.end(`${kws[searchEnd]}`);
+    // }
+    // if(request.url == "/?keyword=wales"){
+    //     response.end(`https://${request.headers.host+request.url}`);
+    // }
+    // if(request.url == "/?keyword=wales"){
+    //     response.end(`${kws.wales}`);
+    // }
+    // if(request.url == "/?keyword=dolphins"){
+    //     response.end(`${kws.dolphins}`);
+    // }
+    // if(request.url == "/?keyword=clownfish"){
+    //     response.end(`${kws.clownfish}`);
+    // }
     // if(request.url == fullUrl){
     //     response.end(`${kws.wales}`);
     // }
